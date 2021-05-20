@@ -14,10 +14,15 @@ namespace CoreCodeCamp.Data
         {
             this.CreateMap<Camp, CampModel>()
                 .ForMember(x => x.Venue, y => y.MapFrom(z => z.Location.VenueName))
-                .ReverseMap(); 
+                .ReverseMap();
 
             this.CreateMap<Talk, TalkModel>()
-                .ReverseMap(); 
+                .ReverseMap()
+                //this is effectively saying "dont get rid of the camp and the speaker" just because we're updating a talk model that doesn't neccessairly
+                //have a camp or speaker specified..
+                .ForMember(t => t.Camp, opt => opt.Ignore())
+                .ForMember(t => t.Speaker, opt => opt.Ignore());
+            
 
             this.CreateMap<Speaker, SpeakerModel>()
                 .ReverseMap(); 
